@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | PRAHARI</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="/">PRAHARI</a>
+  <div class="user-nav">Hello, {{ name }} <a href="/contacts" class="nav-btn">Contacts</a><a href="/logout" class="nav-btn">Logout</a></div>
+</header>
+
+<main class="dashboard">
+  <section class="welcome">
+    <div><span class="eyebrow">USER DASHBOARD</span><h1>Welcome, {{ name }}.</h1><p>Your PRAHARI safety center.</p></div>
+    <div class="sos-wrap">
+      <button id="sosButton" class="sos-btn" {% if active_incident %}disabled{% endif %}>SOS</button>
+      <small id="sosHint">{% if active_incident %}Active SOS #{{ active_incident.id }}{% else %}Press only in an emergency{% endif %}</small>
+    </div>
+  </section>
+
+  <div id="sosStatus" class="notice {% if active_incident %}danger-notice{% endif %}">
+    {% if active_incident %}
+      <strong>Active incident #{{ active_incident.id }}</strong><br>
+      PRAHARI has recorded this SOS. Location: {% if active_incident.latitude %}received{% else %}not available{% endif %}.
+      <button class="resolve-btn" onclick="resolveSOS({{ active_incident.id }})">Mark Safe / Resolve</button>
+    {% else %}
+      SOS is ready. Your browser will request location permission when you activate it.
+    {% endif %}
+  </div>
+
+  <section class="dash-grid">
+    <article class="dash-card">
+    <span>🗺️</span>
+
+    <h3>Safety Map</h3>
+
+    <p>
+        Area safety information and alerts.
+    </p>
+
+    <a
+        href="/safety-map"
+        class="btn primary"
+        style="margin-top:18px;"
+    >
+        Open Safety Map
+    </a>
+</article>
+
+    <article class="dash-card"><span>📸</span><h3>Report Incident</h3><p>Report harassment, stalking, threats or unsafe situations.</p><a href="/report" class="btn primary" style="margin-top:18px;">Report Now</a></article>
+<article class="dash-card">
+    <span>📋</span>
+    <h3>My Cases</h3>
+    <p>Track reports and authority updates.</p>
+
+    <a
+        href="/cases"
+        class="btn primary"
+        style="margin-top:18px;"
+    >
+        View Cases
+    </a>
+</article>
+    <article class="dash-card"><span>☎️</span><h3>Emergency Contacts</h3><p>{{ contacts|length }} contact(s) saved.</p><a href="/contacts" class="small-link">Manage contacts →</a></article>
+  </section>
+
+  <div class="notice"><strong>Prototype safety note:</strong> This development build records an SOS incident in PRAHARI's database. It does not yet contact police/emergency services. That integration comes after the core workflow is tested.</div>
+</main>
+
+<script>
+
+async function getLocation() {
+
+    return new Promise((resolve) => {
+
+        if (!navigator.geolocation) {
+            return resolve(null);
+        }
+
+        navigator.geolocation.getCurrentPosition(
+
+            (position) => {
+
+                resolve({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    accuracy: position.coords.accuracy
+                });
+
+            },
+
+            () => {
+                resolve(null);
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+
+        );
+
+    });
+
+}
+
+
+document.getElementById("sosButton")?.addEventListener(
+    "click",
+    async () => {
+
+        const button = document.getElementById("sosButton");
+        const status = document.getElementById("sosStatus");
+
+        if (!confirm(
+            "Activate PRAHARI SOS? Use this only during an emergency."
+        )) {
+            return;
+        }
+
+        button.disabled = true;
+        button.textContent = "…";
+
+        status.className = "notice danger-notice";
+
+        status.innerHTML =
+            "<strong>Activating SOS…</strong><br>" +
+            "Requesting your location.";
+
+        const location = await getLocation();
+
+        try {
+
+            const response = await fetch("/api/sos", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(location || {})
+
+            });
+
+            const result = await response.json();
+
+
+            if (result.ok) {
+
+                status.innerHTML =
+                    `<strong>SOS ACTIVE — Incident #${result.incident_id}</strong><br>
+                    Your SOS has been recorded.
+                    Location: ${
+                        result.location_received
+                            ? "received"
+                            : "not available"
+                    }.
+                    <button
+                        class="resolve-btn"
+                        onclick="resolveSOS(${result.incident_id})"
+                    >
+                        Mark Safe / Resolve
+                    </button>`;
+
+                document.getElementById("sosHint").textContent =
+                    "Active SOS #" + result.incident_id;
+
+            } else {
+
+                button.disabled = false;
+                button.textContent = "SOS";
+
+                status.className = "notice";
+
+                status.textContent =
+                    result.error || "Could not activate SOS.";
+
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+            button.disabled = false;
+            button.textContent = "SOS";
+
+            status.className = "notice";
+
+            status.textContent =
+                "Unable to connect to PRAHARI server.";
+
+        }
+
+    }
+);
+
+
+async function resolveSOS(id) {
+
+    if (!confirm(
+        "Are you safe and want to resolve this SOS?"
+    )) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            `/api/sos/${id}/resolve`,
+            {
+                method: "POST"
+            }
+        );
+
+        const result = await response.json();
+
+        if (result.ok) {
+
+            location.reload();
+
+        } else {
+
+            alert(
+                result.error ||
+                "Could not resolve incident."
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to connect to PRAHARI server."
+        );
+
+    }
+
+}
+
+</script>
+</body>
+</html>

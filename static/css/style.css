@@ -1,0 +1,597 @@
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Inter, Segoe UI, Arial, sans-serif;
+    background: #07111f;
+    color: #edf4ff;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.nav {
+    height: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 7%;
+    border-bottom: 1px solid #1b2b3e;
+    background: #081422cc;
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+.brand {
+    font-weight: 900;
+    letter-spacing: 3px;
+    font-size: 1.25rem;
+}
+
+.nav nav,
+.user-nav {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+}
+
+.nav nav > a:not(.nav-btn) {
+    color: #aebdcd;
+}
+
+.nav-btn {
+    border: 1px solid #30445b;
+    border-radius: 10px;
+    padding: 8px 14px;
+    color: #d9e6f4;
+}
+
+.nav-btn.primary,
+.primary {
+    background: #d9eefc;
+    color: #07111f;
+    border-color: #d9eefc;
+}
+
+
+/* =========================
+   HERO SECTION
+========================= */
+
+.hero {
+    min-height: 680px;
+    padding: 90px 8%;
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    align-items: center;
+    gap: 80px;
+    background: radial-gradient(
+        circle at 75% 45%,
+        #163c59 0,
+        #07111f 38%
+    );
+}
+
+.eyebrow {
+    font-size: 0.76rem;
+    letter-spacing: 3px;
+    color: #79b9dd;
+    font-weight: 800;
+}
+
+.hero h1 {
+    font-size: clamp(3rem, 6vw, 5.7rem);
+    line-height: 1.03;
+    margin: 18px 0 24px;
+    max-width: 850px;
+}
+
+.hero h1 span {
+    color: #7fc5e9;
+}
+
+.hero p {
+    max-width: 690px;
+    color: #aebdcd;
+    font-size: 1.08rem;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 14px;
+    margin: 32px 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 13px 22px;
+    border-radius: 11px;
+    border: 1px solid #30445b;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.secondary {
+    background: #0d1c2c;
+}
+
+.trust-row {
+    display: flex;
+    gap: 22px;
+    color: #7f91a4;
+    font-size: 0.85rem;
+}
+
+
+/* =========================
+   SHIELD CARD
+========================= */
+
+.shield-card {
+    background: linear-gradient(
+        145deg,
+        #10263a,
+        #091522
+    );
+    border: 1px solid #29435a;
+    border-radius: 28px;
+    padding: 50px 35px;
+    text-align: center;
+    box-shadow: 0 30px 90px #0008;
+}
+
+.shield {
+    font-size: 6rem;
+    margin-bottom: 15px;
+}
+
+.shield-card h3 {
+    font-size: 2rem;
+    letter-spacing: 4px;
+}
+
+.shield-card p {
+    color: #9cafc1;
+    margin: 8px 0 28px;
+}
+
+.mini-status {
+    border: 1px solid #29435a;
+    border-radius: 12px;
+    padding: 11px;
+    color: #b8cad9;
+}
+
+.mini-status span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #62d49a;
+    margin-right: 8px;
+}
+
+
+/* =========================
+   FEATURES
+========================= */
+
+.features {
+    padding: 90px 8%;
+    background: #091725;
+}
+
+.section-heading {
+    margin-bottom: 35px;
+}
+
+.section-heading h2 {
+    font-size: 2.3rem;
+    max-width: 700px;
+    margin-top: 8px;
+}
+
+.feature-grid,
+.dash-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.feature-grid article,
+.dash-card {
+    background: #0d1d2d;
+    border: 1px solid #1f3449;
+    border-radius: 18px;
+    padding: 25px;
+}
+
+.feature-grid article > div,
+.dash-card > span {
+    font-size: 1.8rem;
+}
+
+.feature-grid h3,
+.dash-card h3 {
+    margin: 10px 0 5px;
+}
+
+.feature-grid p,
+.dash-card p {
+    color: #8fa3b7;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    text-align: center;
+    padding: 28px;
+    color: #687d91;
+    font-size: 0.85rem;
+}
+
+
+/* =========================
+   AUTH PAGES
+========================= */
+
+.auth-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 30px;
+    background: radial-gradient(
+        circle at 50% 0,
+        #12334b,
+        #07111f 45%
+    );
+}
+
+.auth-card {
+    width: min(430px, 100%);
+    background: #0d1d2d;
+    border: 1px solid #284158;
+    border-radius: 22px;
+    padding: 38px;
+}
+
+.auth-card h1 {
+    font-size: 2.4rem;
+    margin: 8px 0 22px;
+}
+
+.auth-card .brand {
+    display: block;
+    margin-bottom: 38px;
+}
+
+.auth-card form {
+    display: grid;
+    gap: 17px;
+}
+
+
+/* =========================
+   FORMS
+========================= */
+
+label {
+    display: grid;
+    gap: 7px;
+    color: #b9c8d6;
+    font-size: 0.9rem;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid #30465d;
+    background: #081522;
+    color: white;
+    outline: none;
+}
+
+input:focus {
+    border-color: #79b9dd;
+}
+
+.full {
+    width: 100%;
+}
+
+.muted {
+    color: #8fa3b7;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.muted a {
+    color: #7fc5e9;
+}
+
+
+/* =========================
+   ALERTS
+========================= */
+
+.alert {
+    background: #40242a;
+    border: 1px solid #71404a;
+    color: #ffc5cc;
+    padding: 10px 12px;
+    border-radius: 9px;
+    margin-bottom: 16px;
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard {
+    padding: 60px 7%;
+}
+
+.welcome {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 38px;
+}
+
+.welcome h1 {
+    font-size: 3rem;
+    margin: 5px 0;
+}
+
+.welcome p {
+    color: #91a5b8;
+}
+
+
+/* =========================
+   SOS
+========================= */
+
+.sos-wrap {
+    text-align: center;
+}
+
+.sos-btn {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #ffb2b2;
+    background: #b92935;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 0 0 10px #b929351c;
+}
+
+.sos-btn:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
+}
+
+.sos-wrap small {
+    display: block;
+    color: #8fa3b7;
+    margin-top: 16px;
+}
+
+
+/* =========================
+   DASHBOARD CARDS
+========================= */
+
+.dash-grid {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.dash-card {
+    min-height: 190px;
+}
+
+.disabled-btn {
+    margin-top: 18px;
+    padding: 9px 13px;
+    border: 1px solid #2c4257;
+    background: #122438;
+    color: #75899c;
+    border-radius: 9px;
+}
+
+
+/* =========================
+   NOTICES
+========================= */
+
+.notice {
+    margin-top: 25px;
+    padding: 16px;
+    border-left: 3px solid #79b9dd;
+    background: #0d1d2d;
+    color: #a9bac9;
+    border-radius: 8px;
+}
+
+.danger-notice {
+    border-left-color: #d94d59;
+    background: #27171c;
+}
+
+.resolve-btn {
+    margin-top: 12px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #70434a;
+    background: #391e24;
+    color: #ffd9dc;
+    cursor: pointer;
+}
+
+
+/* =========================
+   CONTACTS
+========================= */
+
+.small-link {
+    display: inline-block;
+    margin-top: 18px;
+    color: #7fc5e9;
+}
+
+.wide {
+    width: min(600px, 100%);
+}
+
+.contact-list {
+    margin-top: 28px;
+    display: grid;
+    gap: 10px;
+}
+
+.contact-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 14px;
+    border: 1px solid #294158;
+    background: #091725;
+    border-radius: 10px;
+}
+
+.contact-item span {
+    color: #91a5b8;
+}
+
+.success {
+    background: #18382d;
+    border-color: #2d6750;
+    color: #bcebd7;
+}
+
+
+/* =========================
+   REPORT / INCIDENT FORM
+========================= */
+
+select,
+textarea {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid #30465d;
+    background: #081522;
+    color: white;
+    outline: none;
+    font-family: inherit;
+}
+
+select:focus,
+textarea:focus {
+    border-color: #79b9dd;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input[type="file"] {
+    padding: 10px;
+    background: #081522;
+    border: 1px solid #30465d;
+    border-radius: 10px;
+    color: #aebdcd;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 850px) {
+
+    .hero {
+        grid-template-columns: 1fr;
+        padding-top: 60px;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .dash-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 550px) {
+
+    .nav {
+        padding: 0 5%;
+    }
+
+    .nav nav > a:not(.nav-btn) {
+        display: none;
+    }
+
+    .hero {
+        padding: 55px 6%;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .trust-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .welcome {
+        align-items: flex-start;
+        gap: 25px;
+    }
+
+    .welcome h1 {
+        font-size: 2rem;
+    }
+
+    .sos-btn {
+        width: 78px;
+        height: 78px;
+    }
+
+    .dashboard {
+        padding: 40px 5%;
+    }
+}

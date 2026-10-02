@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Case Submitted | PRAHARI</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body class="auth-page">
+
+<div class="auth-card">
+
+    <div class="shield">
+        🛡️
+    </div>
+
+    <span class="eyebrow">
+        REPORT SUBMITTED
+    </span>
+
+    <h1>Case Created</h1>
+
+    <p class="muted">
+        Your incident report has been recorded in PRAHARI.
+    </p>
+
+
+    <div class="notice">
+
+        <strong>Case ID</strong>
+
+        <h2 style="margin-top:8px;">
+            {{ report.case_id }}
+        </h2>
+
+    </div>
+
+
+    <div class="notice">
+
+        <strong>Status</strong>
+
+        <p>
+            {{ report.status }}
+        </p>
+
+    </div>
+
+
+    <p class="muted">
+
+        Keep your Case ID for future reference.
+
+    </p>
+
+
+    <a
+        href="/dashboard"
+        class="btn primary full"
+    >
+        Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>

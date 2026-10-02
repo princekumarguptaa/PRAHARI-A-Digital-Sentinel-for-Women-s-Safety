@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Cases | PRAHARI</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+<header class="nav">
+
+    <a class="brand" href="/">
+        PRAHARI
+    </a>
+
+    <div class="user-nav">
+        <a href="/dashboard" class="nav-btn">
+            Dashboard
+        </a>
+
+        <a href="/contacts" class="nav-btn">
+            Contacts
+        </a>
+
+        <a href="/logout" class="nav-btn">
+            Logout
+        </a>
+    </div>
+
+</header>
+
+
+<main class="dashboard">
+
+    <section class="welcome">
+
+        <div>
+            <span class="eyebrow">
+                CASE MANAGEMENT
+            </span>
+
+            <h1>
+                My Cases
+            </h1>
+
+            <p>
+                View and track the incident reports you have submitted.
+            </p>
+        </div>
+
+    </section>
+
+
+    {% if reports %}
+
+        <section class="contact-list">
+
+            {% for report in reports %}
+
+                <article class="dash-card">
+
+                    <div style="display:flex; justify-content:space-between; gap:20px; align-items:flex-start;">
+
+                        <div>
+
+                            <span class="eyebrow">
+                                CASE ID
+                            </span>
+
+                           <h3>
+    <a href="/case/{{ report.case_id }}" style="color:#7fc5e9;">
+        {{ report.case_id }}
+    </a>
+</h3>
+                        </div>
+
+
+                        <div>
+
+                            <span class="eyebrow">
+                                STATUS
+                            </span>
+
+                            <p style="margin-top:5px;">
+                                {{ report.status }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <p style="margin-top:18px;">
+                        <strong>Incident:</strong>
+                        {{ report.incident_type }}
+                    </p>
+
+
+                    <p style="margin-top:8px;">
+                        <strong>Description:</strong>
+                        {{ report.description }}
+                    </p>
+
+
+                    <p style="margin-top:8px;">
+                        <strong>Submitted:</strong>
+                        {{ report.created_at }}
+                    </p>
+
+
+                    {% if report.evidence_file %}
+
+                        <p style="margin-top:8px;">
+                            <strong>Evidence:</strong>
+                            Attached
+                        </p>
+
+                    {% else %}
+
+                        <p style="margin-top:8px;">
+                            <strong>Evidence:</strong>
+                            No evidence attached
+                        </p>
+
+                    {% endif %}
+
+
+                </article>
+
+            {% endfor %}
+
+        </section>
+
+    {% else %}
+
+        <div class="notice">
+
+            <strong>No cases yet.</strong>
+
+            <p style="margin-top:8px;">
+                You have not submitted any incident reports.
+            </p>
+
+            <a
+                href="/report"
+                class="btn primary"
+                style="margin-top:18px;"
+            >
+                Report an Incident
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</main>
+
+</body>
+</html>

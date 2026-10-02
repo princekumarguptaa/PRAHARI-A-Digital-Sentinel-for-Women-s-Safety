@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Case Details | PRAHARI</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+<header class="nav">
+
+    <a class="brand" href="/">
+        PRAHARI
+    </a>
+
+    <div class="user-nav">
+        <a href="/dashboard" class="nav-btn">
+            Dashboard
+        </a>
+
+        <a href="/cases" class="nav-btn">
+            My Cases
+        </a>
+
+        <a href="/logout" class="nav-btn">
+            Logout
+        </a>
+    </div>
+
+</header>
+
+
+<main class="dashboard">
+
+    <section class="welcome">
+
+        <div>
+            <span class="eyebrow">
+                CASE DETAILS
+            </span>
+
+            <h1>
+                {{ report.case_id }}
+            </h1>
+
+            <p>
+                Detailed information about your submitted incident.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section class="dash-card">
+
+        <span class="eyebrow">
+            CURRENT STATUS
+        </span>
+
+        <h2 style="margin-top:8px;">
+            {{ report.status }}
+        </h2>
+
+        <hr style="margin:25px 0; border:0; border-top:1px solid #294158;">
+
+
+        <p>
+            <strong>Incident Type:</strong>
+            {{ report.incident_type }}
+        </p>
+
+
+        <p style="margin-top:14px;">
+            <strong>Description:</strong>
+        </p>
+
+        <p style="margin-top:5px;">
+            {{ report.description }}
+        </p>
+
+
+        <p style="margin-top:14px;">
+            <strong>Submitted:</strong>
+            {{ report.created_at }}
+        </p>
+
+
+        <p style="margin-top:14px;">
+            <strong>Location:</strong>
+
+            {% if report.latitude and report.longitude %}
+                Location received
+            {% else %}
+                Location not available
+            {% endif %}
+        </p>
+
+
+      <p style="margin-top:14px;">
+    <strong>Evidence:</strong>
+</p>
+
+{% if report.evidence_file %}
+
+    <div style="
+        margin-top:10px;
+        padding:15px;
+        border:1px solid #294158;
+        border-radius:12px;
+        background:#091725;
+    ">
+
+        {% if report.evidence_type == "IMAGE" %}
+
+            <img
+                src="{{ url_for('view_evidence', case_id=report.case_id) }}"
+                alt="Case evidence"
+                style="
+                    max-width:100%;
+                    max-height:500px;
+                    border-radius:10px;
+                    display:block;
+                "
+            >
+
+        {% elif report.evidence_type == "VIDEO" %}
+
+            <video
+                controls
+                style="
+                    width:100%;
+                    max-height:500px;
+                    border-radius:10px;
+                "
+            >
+                <source
+                    src="{{ url_for('view_evidence', case_id=report.case_id) }}"
+                >
+                Your browser does not support video playback.
+            </video>
+
+        {% elif report.evidence_type == "AUDIO" %}
+
+            <audio
+                controls
+                style="width:100%;"
+            >
+                <source
+                    src="{{ url_for('view_evidence', case_id=report.case_id) }}"
+                >
+                Your browser does not support audio playback.
+            </audio>
+
+        {% endif %}
+
+        <p style="margin-top:12px;">
+            Evidence file: {{ report.evidence_file }}
+        </p>
+
+    </div>
+
+{% else %}
+
+    <p style="margin-top:8px;">
+        No evidence attached.
+    </p>
+
+{% endif %}
+
+    </section>
+
+
+    <div style="margin-top:25px;">
+
+        <a href="/cases" class="btn secondary">
+            ← Back to My Cases
+        </a>
+
+    </div>
+
+
+    <div class="notice">
+
+        <strong>Case status information</strong>
+
+        <p style="margin-top:8px;">
+            This case is currently stored in PRAHARI.
+            Authority-side updates will be added in a future module.
+        </p>
+
+    </div>
+
+</main>
+
+</body>
+</html>

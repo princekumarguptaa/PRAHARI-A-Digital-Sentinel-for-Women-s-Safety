@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Report Incident | PRAHARI</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body class="auth-page">
+
+<div class="auth-card wide">
+
+    <a class="brand" href="/dashboard">PRAHARI</a>
+
+    <span class="eyebrow">INCIDENT REPORT</span>
+
+    <h1>Report an Incident</h1>
+
+    <p class="muted">
+        Provide accurate information. Your report will receive a unique PRAHARI case ID.
+    </p>
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+        id="reportForm"
+    >
+
+        <label>
+            Incident Type
+
+            <select name="incident_type" required>
+                <option value="">Select incident type</option>
+                <option value="Harassment">Harassment</option>
+                <option value="Stalking">Stalking</option>
+                <option value="Assault">Assault</option>
+                <option value="Threat">Threat</option>
+                <option value="Unsafe Situation">Unsafe Situation</option>
+                <option value="Other">Other</option>
+            </select>
+        </label>
+
+
+        <label>
+            Description
+
+            <textarea
+                name="description"
+                rows="6"
+                placeholder="Describe what happened..."
+                required
+            ></textarea>
+        </label>
+
+
+        <label>
+            Evidence
+
+            <input
+                type="file"
+                name="evidence"
+                accept="image/*,video/*,audio/*"
+            >
+
+            <small class="muted">
+                Supported: images, videos and audio.
+            </small>
+        </label>
+
+
+        <input type="hidden" name="latitude" id="latitude">
+        <input type="hidden" name="longitude" id="longitude">
+        <input type="hidden" name="accuracy" id="accuracy">
+
+
+        <div class="notice">
+            📍 Location will be requested when you submit the report.
+        </div>
+
+
+        <button
+            type="submit"
+            class="btn primary full"
+            id="submitButton"
+        >
+            Submit Report
+        </button>
+
+    </form>
+
+
+    <p class="muted">
+        <a href="/dashboard">← Back to Dashboard</a>
+    </p>
+
+</div>
+
+
+<script>
+
+const form = document.getElementById("reportForm");
+
+form.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const button = document.getElementById("submitButton");
+
+    button.disabled = true;
+    button.textContent = "Getting location...";
+
+
+    if (!navigator.geolocation) {
+
+        button.textContent = "Submitting...";
+
+        form.submit();
+
+        return;
+    }
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            document.getElementById("latitude").value =
+                position.coords.latitude;
+
+            document.getElementById("longitude").value =
+                position.coords.longitude;
+
+            document.getElementById("accuracy").value =
+                position.coords.accuracy;
+
+
+            button.textContent = "Submitting...";
+
+            form.submit();
+        },
+
+
+        function() {
+
+            // Report can still be submitted without location.
+
+            button.textContent = "Submitting...";
+
+            form.submit();
+        },
+
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        }
+
+    );
+
+});
+
+</script>
+
+</body>
+</html>
