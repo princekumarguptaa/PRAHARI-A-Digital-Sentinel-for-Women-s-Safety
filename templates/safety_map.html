@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Safety Map | PRAHARI</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+</head>
+
+<body>
+
+<header class="nav">
+
+    <a class="brand" href="/">
+        PRAHARI
+    </a>
+
+    <div class="user-nav">
+
+        <a href="/dashboard" class="nav-btn">
+            Dashboard
+        </a>
+
+        <a href="/cases" class="nav-btn">
+            My Cases
+        </a>
+
+        <a href="/contacts" class="nav-btn">
+            Contacts
+        </a>
+
+        <a href="/logout" class="nav-btn">
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="dashboard">
+
+    <section class="welcome">
+
+        <div>
+
+            <span class="eyebrow">
+                SAFETY INTELLIGENCE
+            </span>
+
+            <h1>
+                Safety Map
+            </h1>
+
+            <p>
+                Explore safety information around your current location.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="dash-card">
+
+        <h2>
+            Area Safety Index
+        </h2>
+
+        <p style="margin-top:8px;">
+            Safety information will be calculated using incident
+            reports, recency, severity and available safety resources.
+        </p>
+
+
+<div
+    id="map"
+    style="
+        width:100%;
+        height:500px;
+        margin-top:25px;
+        border-radius:16px;
+        border:1px solid #294158;
+        overflow:hidden;
+    "
+></div>
+
+<div
+    id="locationStatus"
+    class="notice"
+    style="margin-top:15px;"
+>
+    Requesting your location...
+</div>
+
+        </div>
+
+    </section>
+
+
+    <div class="notice">
+
+        <strong>Safety information notice</strong>
+
+        <p style="margin-top:8px;">
+            PRAHARI will distinguish between reported incidents
+            and verified information. An incident report does not
+            automatically mean that an area or person is dangerous.
+        </p>
+
+    </div>
+
+</main>
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+<script>
+    const statusBox = document.getElementById("locationStatus");
+
+    const map = L.map("map").setView([28.6139, 77.2090], 12);
+
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            maxZoom: 19,
+            attribution: "&copy; OpenStreetMap contributors"
+        }
+    ).addTo(map);
+
+
+    function showLocation(position) {
+
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        const accuracy = position.coords.accuracy;
+
+
+        map.setView(
+            [latitude, longitude],
+            16
+        );
+
+
+        const marker = L.marker(
+            [latitude, longitude]
+        ).addTo(map);
+
+
+        marker.bindPopup(
+            "<strong>Your Location</strong><br>" +
+            "Accuracy: approximately " +
+            Math.round(accuracy) +
+            " metres"
+        ).openPopup();
+
+
+        L.circle(
+            [latitude, longitude],
+            {
+                radius: accuracy
+            }
+        ).addTo(map);
+
+
+        statusBox.className = "notice";
+
+        statusBox.innerHTML =
+            "<strong>Location detected.</strong><br>" +
+            "Your current position is shown on the map.";
+    }
+
+
+    function locationError(error) {
+
+        console.error(error);
+
+        statusBox.className = "notice danger-notice";
+
+        statusBox.innerHTML =
+            "<strong>Location unavailable.</strong><br>" +
+            "Please allow location access in your browser " +
+            "to show your current position.";
+    }
+
+
+    if ("geolocation" in navigator) {
+
+        navigator.geolocation.getCurrentPosition(
+            showLocation,
+            locationError,
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+        );
+
+    } else {
+
+        statusBox.className = "notice danger-notice";
+
+        statusBox.innerHTML =
+            "<strong>Location is not supported.</strong><br>" +
+            "Your browser does not support geolocation.";
+    }
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+
+prahari.db
+
+uploads/
+
+.env
+
+.venv/
+venv/
+env/

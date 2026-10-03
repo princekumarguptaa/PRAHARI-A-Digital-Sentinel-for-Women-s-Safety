@@ -24,7 +24,7 @@
     {% if active_incident %}
       <strong>Active incident #{{ active_incident.id }}</strong><br>
       PRAHARI has recorded this SOS. Location: {% if active_incident.latitude %}received{% else %}not available{% endif %}.
-      <button class="resolve-btn" onclick="resolveSOS({{ active_incident.id }})">Mark Safe / Resolve</button>
+      <button class="resolve-btn" onclick="resolveSOS('{{ active_incident.id }}')">Mark Safe / Resolve</button>
     {% else %}
       SOS is ready. Your browser will request location permission when you activate it.
     {% endif %}

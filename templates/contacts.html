@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergency Contacts | PRAHARI</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-page">
+<div class="auth-card wide">
+  <a class="brand" href="/dashboard">PRAHARI</a>
+  <span class="eyebrow">EMERGENCY CONTACTS</span>
+  <h1>Trusted contacts</h1>
+  {% with messages = get_flashed_messages() %}
+    {% for message in messages %}<div class="alert success">{{ message }}</div>{% endfor %}
+  {% endwith %}
+
+  <form method="POST">
+    <label>Name<input type="text" name="name" required></label>
+    <label>Phone number<input type="tel" name="phone" required></label>
+    <label>Relationship <input type="text" name="relationship" placeholder="Parent, sibling, friend..."></label>
+    <button class="btn primary full" type="submit">Add Contact</button>
+  </form>
+
+  <div class="contact-list">
+    {% for c in contacts %}
+      <div class="contact-item"><strong>{{ c.name }}</strong><span>{{ c.phone }}{% if c.relationship %} · {{ c.relationship }}{% endif %}</span></div>
+    {% else %}
+      <p class="muted">No trusted contacts added yet.</p>
+    {% endfor %}
+  </div>
+  <p class="muted"><a href="/dashboard">← Back to dashboard</a></p>
+</div>
+</body>
+</html>

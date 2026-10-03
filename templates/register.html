@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register | PRAHARI</title><link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-page">
+<div class="auth-card">
+  <a class="brand" href="/">PRAHARI</a>
+  <span class="eyebrow">JOIN PRAHARI</span>
+  <h1>Create account</h1>
+  {% with messages = get_flashed_messages() %}
+    {% for message in messages %}<div class="alert">{{ message }}</div>{% endfor %}
+  {% endwith %}
+  <form method="POST">
+    <label>Full name<input type="text" name="name" required></label>
+    <label>Email<input type="email" name="email" required></label>
+    <label>Password<input type="password" name="password" minlength="6" required></label>
+    <button class="btn primary full" type="submit">Create Account</button>
+  </form>
+  <p class="muted">Already registered? <a href="/login">Sign in</a></p>
+</div>
+</body>
+</html>
